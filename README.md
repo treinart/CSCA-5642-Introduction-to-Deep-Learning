@@ -56,7 +56,7 @@ This repository tracks required projects for **Weeks 3–5** of the ***Universit
       <td>Final submission CSVs.</td>
     </tr>
     <tr>
-      <td><code>│   └── 📄 Week4_Kaggle_NLP_Disaster_Tweets.ipynb</code></td>
+      <td><code>│   ├── 📄 Week4_Kaggle_NLP_Disaster_Tweets.ipynb</code></td>
       <td>The main Jupyter Notebook for the project.</td>
     </tr>
     <tr>
