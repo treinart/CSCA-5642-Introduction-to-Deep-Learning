@@ -1,6 +1,6 @@
 # CSCA 5642: Introduction to Deep Learning
 
-This repository tracks required projects for **Weeks 3–5** of the ***University of Colorado Boulder*** course **CSCA 5642: Introduction to Deep Learning**. Weeks 3 and 4 are complete. Week 5 is a placeholder.
+This repository tracks required projects for **Weeks 3-5** of the ***University of Colorado Boulder*** course **CSCA 5642: Introduction to Deep Learning**. All projects for Weeks 3, 4, and 5 are complete.
 
 ## Repository Structure
 
@@ -15,31 +15,32 @@ This repository tracks required projects for **Weeks 3–5** of the ***Universit
     <tr>
       <td><code>CSCA-5642-Introduction-to-Deep-Learning/</code></td>
       <td>Main repository root.</td>
-     <tr>
-      <td><code>├── 📁 Week3/</code></td>
-      <td>Kaggle Competetion: CNN Cancer Detection.</td>
-    </tr>
-    <tr>
-      <td><code>│   ├── 📁 plots/</code></td>
-      <td>ROC/PR curves, confusion matrices, OOF diagnostics.</td>
-    </tr>
-    <tr>
-      <td><code>│   ├── 📁 submissions/</code></td>
-      <td>Final submission CSVs.</td>
-    </tr>
-    <tr>
-      <td><code>│   ├── 📄 Week3_Kaggle_CNN_Cancer_Detection.ipynb</code></td>
-      <td>The main Jupyter Notebook for the project.</td>
-    </tr>
-    <tr>
-      <td><code>│   ├──  📄 (other exports)</code></td>
-      <td>HTML and PDF versions of the final notebook. </td>
-    </tr>
-    <tr>
-      <td><code>│   └── 🖼️ kaggle_submission_screenshot_combined.png</code></td>
-      <td>Screenshot of final Histopathologic Cancer Detection submission scores on Kaggle.</td>
-    </tr>
-    <tr>
+    </tr>
+    <tr>
+      <td><code>├── 📁 Week3/</code></td>
+      <td>Kaggle Competition: CNN Cancer Detection.</td>
+    </tr>
+    <tr>
+      <td><code>│   ├── 📁 plots/</code></td>
+      <td>ROC/PR curves, confusion matrices, OOF diagnostics.</td>
+    </tr>
+    <tr>
+      <td><code>│   ├── 📁 submissions/</code></td>
+      <td>Final submission CSVs.</td>
+    </tr>
+    <tr>
+      <td><code>│   ├── 📄 Week3_Kaggle_CNN_Cancer_Detection.ipynb</code></td>
+      <td>The main Jupyter Notebook for the project.</td>
+    </tr>
+    <tr>
+      <td><code>│   ├──  📄 (other exports)</code></td>
+      <td>HTML and PDF versions of the final notebook. </td>
+    </tr>
+    <tr>
+      <td><code>│   └── 🖼️ kaggle_submission_screenshot_combined.png</code></td>
+      <td>Screenshot of final Histopathologic Cancer Detection submission scores on Kaggle.</td>
+    </tr>
+    <tr>
       <td><code>├── 📁 Week4/</code></td>
       <td>Kaggle Competition: NLP with Disaster Tweets.</td>
     </tr>
@@ -47,10 +48,10 @@ This repository tracks required projects for **Weeks 3–5** of the ***Universit
       <td><code>│   ├── 📁 datasets/</code></td>
       <td>Contains the <code>train.csv</code>, <code>test.csv</code>, and <code>sample_submission.csv</code> files.</td>
     </tr>
-        <tr>
-      <td><code>│   ├── 📁 plots/</code></td>
-      <td>Diagnostic plots: per-fold AUC, ROC/PR curves, probability distributions.</td>
-    </tr>
+        <tr>
+      <td><code>│   ├── 📁 plots/</code></td>
+      <td>Diagnostic plots: per-fold AUC, ROC/PR curves, probability distributions.</td>
+    </tr>
     <tr>
       <td><code>│   ├── 📁 submissions/</code></td>
       <td>Final submission CSVs.</td>
@@ -69,7 +70,23 @@ This repository tracks required projects for **Weeks 3–5** of the ***Universit
     </tr>
     <tr>
       <td><code>├── 📁 Week5/</code></td>
-      <td><i>placeholder</i></td>
+      <td>Kaggle Competition: I'm Something of a Painter Myself (GANs).</td>
+    </tr>
+    <tr>
+      <td><code>│   ├── 📁 generated_showcase/</code></td>
+      <td>A hand-picked showcase of 37 final generated images.</td>
+    </tr>
+    <tr>
+      <td><code>│   ├── 📁 plots/</code></td>
+      <td>Diagnostic plots and image previews from the notebook.</td>
+    </tr>
+    <tr>
+      <td><code>│   ├── 📄 Notebook & Exports</code></td>
+      <td>The final <code>.ipynb</code> and <code>.html</code> files are available as assets in the GitHub Release due to their large size.</td>
+    </tr>
+    <tr>
+      <td><code>│   └── 🖼️ kaggle_monet_scores.png</code></td>
+      <td>Screenshot of final Kaggle submission scores.</td>
     </tr>
     <tr>
       <td><code>└── 📄 README.md</code></td>
@@ -78,8 +95,9 @@ This repository tracks required projects for **Weeks 3–5** of the ***Universit
   </tbody>
 </table>
 
-> **Note:** Datasets for Week 3 are not tracked in git due to their size. The Kaggle images exceed the size limits.
-> https://www.kaggle.com/competitions/histopathologic-cancer-detection/data
+**Note:** Datasets for Week 3 and Week 5 are not tracked in git due to size limits. See the Kaggle data pages linked below.
+> Week 3 Data: https://www.kaggle.com/competitions/histopathologic-cancer-detection/data  
+> Week 5 Data: https://www.kaggle.com/competitions/gan-getting-started/data
 
 ## Week 3: CNN Cancer Detection (Kaggle)
 
@@ -107,8 +125,28 @@ This repository tracks required projects for **Weeks 3–5** of the ***Universit
 - **Section 8: Ensemble Blend** A weighted blend of the OOF logits from all previous models.  
   Kaggle F1: **0.83941**.
 
+## Week 5: I'm Something of a Painter Myself (Kaggle)
+
+**Goal:** Generate Monet-style paintings from landscape photos using a CycleGAN, aiming for a competitive MiFID score of 60 or less.
+
+**Progression**
+- **Baseline Run (15 Epochs):** An initial training run established a strong but insufficient baseline score.
+  Kaggle MiFID: **69.06**.
+- **Fine-Tuning & TTA (10 Epochs):** A targeted fine-tuning run with a lower learning rate, re-enabled replay buffers, and a more aggressive identity loss was performed. The final submission was generated using Test-Time Augmentation.
+  Kaggle MiFID: **57.83**; public leaderboard **#11** at publish time..
+
+[View the "I’m Something of a Painter Myself" Leaderboard (Team: Travis Reinart)](https://www.kaggle.com/competitions/gan-getting-started/leaderboard)
+
+### Large Files
+The final notebook and HTML are ~43 MB each. To keep the repo small, they are published as GitHub Release assets. The live report is also viewable on Netlify.
+
+- **Live HTML Report (Netlify):** https://roaring-sprinkles-7dbf83.netlify.app/
+- **Release Assets Page:** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/tag/Week5_Kaggle_Monet_Competition
+- **Download Notebook (.ipynb):** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/download/Week5_Kaggle_Monet_Competition/Week5_Kaggle_Monet_Competition.ipynb
+- **Download HTML:** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/download/Week5_Kaggle_Monet_Competition/Week5_Kaggle_Monet_Competition.html
+
+
 ---
 <p align="center">
   Licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
 </p>
-
