@@ -1,6 +1,6 @@
 # CSCA 5642: Introduction to Deep Learning
 
-This repository tracks required projects for **Weeks 3-5** of the ***University of Colorado Boulder*** course **CSCA 5642: Introduction to Deep Learning**. All projects for Weeks 3, 4, and 5 are complete.
+This repository tracks required projects for **Weeks 3-6** of the ***University of Colorado Boulder*** course **CSCA 5642: Introduction to Deep Learning**. All projects for Weeks 3, 4, and 5 are complete.
 
 ## Repository Structure
 
@@ -88,16 +88,33 @@ This repository tracks required projects for **Weeks 3-5** of the ***University 
       <td><code>│   └── 🖼️ kaggle_monet_scores.png</code></td>
       <td>Screenshot of final Kaggle submission scores.</td>
     </tr>
+        <tr>
+      <td><code>├── 📁 Week6/</code></td>
+      <td>Predicting Class 8 Truck Fuel Rate in ADAS Platoons with CNN→GRU</td>
+    </tr>
+        <tr>
+      <td><code>│   ├── 📁 plots/</code></td>
+      <td>Diagnostic plots and image previews from the notebook.</td>
+    </tr>
+        <tr>
+      <td><code>│   ├── 📄 CSCA5642_Final_Project_Fuel_Rate.ipynb</code></td>
+      <td>The main Jupyter Notebook for the project.</td>
+    </tr>
     <tr>
+      <td><code>│   ├── 📄 (other exports)</code></td>
+      <td>HTML and PDF versions of the final notebook. </td>
+    </tr>
+        <tr>
       <td><code>└── 📄 README.md</code></td>
       <td>This file.</td>
     </tr>
   </tbody>
 </table>
 
-**Note:** Datasets for Week 3 and Week 5 are not tracked in git due to size limits. See the Kaggle data pages linked below.
-> Week 3 Data: https://www.kaggle.com/competitions/histopathologic-cancer-detection/data  
-> Week 5 Data: https://www.kaggle.com/competitions/gan-getting-started/data
+**Note:** Datasets for Week 3, Week 5, and Week 6 are not tracked in git due to size limits. See the pages linked below to download datasets.
+* **Week 3 Data:** [Histopathologic Cancer Detection](https://www.kaggle.com/competitions/histopathologic-cancer-detection/data)
+* **Week 5 Data:** [Kaggle: I’m Something of a Painter Myself](https://www.kaggle.com/competitions/gan-getting-started/data)
+* **Week 6 Data:** [Energy.gov NREL: Truck Platooning Performance](https://livewire.energy.gov/ds/nrel-mdhd-cav/ds0)
 
 ## Week 3: CNN Cancer Detection (Kaggle)
 
@@ -145,6 +162,22 @@ The final notebook and HTML are ~43 MB each. To keep the repo small, they are pu
 - **Download Notebook (.ipynb):** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/download/Week5_Kaggle_Monet_Competition/Week5_Kaggle_Monet_Competition.ipynb
 - **Download HTML:** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/download/Week5_Kaggle_Monet_Competition/Week5_Kaggle_Monet_Competition.html
 
+Of course. A good `README` is crucial for telling the story of a project. I've reviewed your current structure and drafted a description for Week 6 that matches the format and style of the other sections.
+
+This new section summarizes the goal, the progression from the baseline to the final deep learning model, and the ultimate outcome of the analysis.
+
+---
+## Week 6: Predicting Truck Fuel Rate with CNN→GRU (Final Project)
+**Goal:** Predict the instantaneous fuel rate of Class 8 trucks from time-series data and use the model to quantify the fuel savings benefits of ADAS platooning.
+**Progression**
+- **Section 7: Classical Baseline** An XGBoost model was trained on statistical features aggregated over 10-second windows. This established a strong, non-sequential benchmark.  
+  Best Validation MAE: **1.31 L/hr**.
+- **Section 8: CNN→GRU Model** A hybrid deep learning model using a CNN to extract features and a GRU to model temporal dependencies was trained on the full sequence data. This model significantly outperformed the baseline.  
+  Best Validation MAE: **0.95 L/hr**.
+- **Section 10: Platoon Savings Analysis** The trained CNN→GRU model was used to analyze real-world platoon runs. The final analysis calculated the team-average fuel savings compared to a solo truck baseline (6.8 MPG) during highway driving (≥100 km/h).  
+  Measured Savings: **8.3% (2-Truck)** and **12.2% (3-Truck)**.
+
+### Visit the live link for [Truck Platooning: Interactive ROI Calculator](https://treinart.github.io/CSCA-5642-Introduction-to-Deep-Learning/Truck_Platooning_ROI_Calculator_v9.html).
 
 ---
 <p align="center">
