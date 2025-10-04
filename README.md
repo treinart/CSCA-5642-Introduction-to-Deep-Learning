@@ -1,6 +1,6 @@
 # CSCA 5642: Introduction to Deep Learning
 
-This repository tracks required projects for **Weeks 3-6** of the ***University of Colorado Boulder*** course **CSCA 5642: Introduction to Deep Learning**. All projects for Weeks 3, 4, and 5 are complete.
+This repository tracks required projects for **Weeks 3-6** of the ***University of Colorado Boulder*** course **CSCA 5642: Introduction to Deep Learning**.
 
 ## Repository Structure
 
@@ -116,6 +116,8 @@ This repository tracks required projects for **Weeks 3-6** of the ***University 
 * **Week 5 Data:** [Kaggle: I’m Something of a Painter Myself](https://www.kaggle.com/competitions/gan-getting-started/data)
 * **Week 6 Data:** [Energy.gov NREL: Truck Platooning Performance](https://livewire.energy.gov/ds/nrel-mdhd-cav/ds0)
 
+---
+
 ## Week 3: CNN Cancer Detection (Kaggle)
 
 **Goal:** Binary classification of histopathology patches with strong validation and reproducible training.
@@ -127,6 +129,8 @@ This repository tracks required projects for **Weeks 3-6** of the ***University 
   Kaggle: **Private 0.9628**, **Public 0.9781**.
 - **Section 7: Advanced** EfficientNetV2-S, 5-fold, 320px, 2 warm up + 8 fine tune, 4-view TTA.  
   Kaggle: **Private 0.9814**, **Public 0.9776**.
+
+---
 
 ## Week 4: NLP with Disaster Tweets (Kaggle)
 
@@ -141,6 +145,8 @@ This repository tracks required projects for **Weeks 3-6** of the ***University 
   Kaggle F1: **0.84615**.
 - **Section 8: Ensemble Blend** A weighted blend of the OOF logits from all previous models.  
   Kaggle F1: **0.83941**.
+
+---
 
 ## Week 5: I'm Something of a Painter Myself (Kaggle)
 
@@ -161,10 +167,6 @@ The final notebook and HTML are ~43 MB each. To keep the repo small, they are pu
 - **Release Assets Page:** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/tag/Week5_Kaggle_Monet_Competition
 - **Download Notebook (.ipynb):** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/download/Week5_Kaggle_Monet_Competition/Week5_Kaggle_Monet_Competition.ipynb
 - **Download HTML:** https://github.com/treinart/CSCA-5642-Introduction-to-Deep-Learning/releases/download/Week5_Kaggle_Monet_Competition/Week5_Kaggle_Monet_Competition.html
-
-Of course. A good `README` is crucial for telling the story of a project. I've reviewed your current structure and drafted a description for Week 6 that matches the format and style of the other sections.
-
-This new section summarizes the goal, the progression from the baseline to the final deep learning model, and the ultimate outcome of the analysis.
 
 ---
 ## Week 6: Predicting Truck Fuel Rate with CNN→GRU (Final Project)
