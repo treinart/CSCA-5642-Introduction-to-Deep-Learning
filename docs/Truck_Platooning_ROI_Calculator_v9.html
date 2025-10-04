@@ -1,0 +1,581 @@
+<!--
+Truck Platooning Interactive ROI Calculator (Final Project: CSCA 5642 Introduction to Deep Learning)
+Copyright © 2025 Travis Reinart
+
+Licensed under the Creative Commons Attribution-NoDerivatives 4.0 International License.
+You may copy and redistribute this work in any medium or format for any purpose,
+even commercially, as long as you give appropriate credit and do not distribute modified versions.
+See: https://creativecommons.org/licenses/by-nd/4.0/
+
+Related Profiles:
+LinkedIn: https://www.linkedin.com/in/travis-reinart/
+GitHub: https://github.com/treinart
+-->
+
+<!DOCTYPE html>
+<title>Truck Platooning ROI Calculator | CSCA 5642 Deep Learning Project</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<meta name="description" content="An interactive ROI calculator to estimate fuel and cost savings from Class 8 truck platooning. This tool is the final project for CU Boulder's CSCA 5642 (Introduction to Deep Learning) and uses savings percentages derived from a CNN-GRU model and public research." />
+<meta name="keywords" content="Truck Platooning, ROI Calculator, Fuel Savings, Fuel Economy, Class 8 Truck, Logistics, Fleet Management, Deep Learning, CNN, GRU, Neural Network, Autonomous Vehicles, CACC, NREL, Caltrans, USDOT, EPA, CO2 Emissions, University of Colorado Boulder, CSCA 5642" />
+<meta name="author" content="Travis Reinart" />
+<link rel="canonical" href="https://treinart.github.io/CSCA-5642-Introduction-to-Deep-Learning/Truck_Platooning_ROI_Calculator.html" />
+
+<meta name="robots" content="index,follow" />
+<meta http-equiv="x-ua-compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="max-age=604800, public" />
+
+<meta property="og:title" content="Truck Platooning ROI Calculator | Deep Learning Project" />
+<meta property="og:description" content="Estimate fleet-wide fuel savings, cost reduction, and CO2 emissions with this interactive truck platooning ROI calculator. A University of Colorado Boulder deep learning project." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://treinart.github.io/CSCA-5642-Introduction-to-Deep-Learning/Truck_Platooning_ROI_Calculator.html" />
+<meta property="og:site_name" content="Travis Reinart - Projects" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Interactive ROI Calculator for Truck Platooning (Deep Learning)" />
+<meta name="twitter:description" content="Final project for CU Boulder's Deep Learning course. Calculate potential fuel savings for your fleet using a tool informed by a CNN-GRU model and NREL data." />
+<meta name="google-site-verification" content="2fae6923dc85e87d" />
+
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "ScholarlyArticle",
+"headline": "Interactive ROI Calculator for Truck Platooning: A Deep Learning Application",
+"description": "Final project for University of Colorado Boulder's CSCA 5642 (Introduction to Deep Learning). This interactive web tool allows users to calculate the potential return on investment (ROI) from implementing 2-truck and 3-truck platooning in a Class 8 commercial fleet. The calculator's default savings percentages are based on a combination of public research (NREL, USDOT) and results from a custom CNN-GRU model designed to predict fuel consumption.",
+"author": {
+    "@type": "Person",
+    "name": "Travis Reinart",
+    "url": "https://www.linkedin.com/in/travis-reinart/"
+},
+"datePublished": "2025-10-01",
+"license": "https://creativecommons.org/licenses/by-nd/4.0/",
+"url": "https://treinart.github.io/CSCA-5642-Introduction-to-Deep-Learning/Truck_Platooning_ROI_Calculator.html",
+"keywords": [
+    "Truck Platooning",
+    "ROI Calculator",
+    "Fuel Savings",
+    "Deep Learning",
+    "CNN",
+    "GRU",
+    "Autonomous Vehicles",
+    "NREL",
+    "Fleet Management",
+    "CSCA 5642"
+],
+"isPartOf": {
+    "@type": "CreativeWorkSeries",
+    "name": "CSCA 5642: Introduction to Deep Learning"
+}
+}
+</script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Truck Platooning Interactive ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; 
+            background-color:#0f1115; 
+            color:#E5E7EB; 
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('YOUR_BACKGROUND_IMAGE_URL_HERE');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        .card { 
+            background:rgba(21, 25, 35, 0.8); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top:1px solid #22283a; 
+            border-bottom:1px solid #22283a; 
+            border-left: 4px solid #2563EB;
+            border-right: 4px solid #DA291C;
+            border-radius:16px; 
+            box-shadow:0 12px 28px rgba(0,0,0,.45); 
+        }
+        .grid-cols-spec { 
+            grid-template-columns: 1fr auto; 
+        }
+        input[type="range"] { 
+            accent-color: #2563EB; 
+            cursor:pointer; 
+        }
+        .slider-val { 
+            min-width:120px; 
+            text-align:right; 
+            font-variant-numeric:tabular-nums; 
+            color: #2563EB;
+            font-weight: 600;
+        }
+        .money { 
+            font-feature-settings: "tnum" on, "lnum" on; 
+            font-weight:800; 
+        }
+        .kpi-xl { 
+            background:linear-gradient(180deg, rgba(17,24,39,0.8) 0%, rgba(11,15,25,0.8) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); 
+            border-top:1px solid #1f2937; 
+            border-bottom:1px solid #1f2937; 
+            border-left: 4px solid #2563EB;
+            border-right: 4px solid #DA291C;
+            border-radius:20px; 
+            padding:22px; 
+            position:relative; 
+            overflow:hidden; 
+        }
+        .kpi-xl:before{ 
+            content:""; 
+            position:absolute; 
+            inset:-30%; 
+            background:radial-gradient(60% 60% at 20% 0%, rgba(207,184,124,.08), transparent 60%); 
+            pointer-events:none; 
+        }
+        .kpi-title { 
+            font-size:1.25rem; 
+            font-weight:800; 
+            letter-spacing:.2px; 
+        }
+        .row { display:flex; justify-content:space-between; gap:.75rem; align-items:baseline; }
+        .v { font-variant-numeric: tabular-nums; font-weight:800; }
+        .sub { color:#9CA3AF; font-size:.85rem; }
+        .xxl { font-size:3.2rem; line-height:1.06; }
+        .grad-money { 
+            background:linear-gradient(90deg, #CFB87C, #fdfb8a, #ff8800); 
+            -webkit-background-clip:text; 
+            background-clip:text; 
+            color:transparent; 
+            text-shadow:0 0 16px rgba(207,184,124,.15); 
+        }
+        .btn { 
+            border-radius:10px; 
+            padding:.55rem .9rem; 
+            font-weight:700; 
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-gray{ background:#374151; color:#fff; }
+        .btn-gray:hover{ background:#4b5563; }
+        .source-link { color: #60a5fa; text-decoration: underline; }
+        .stepper-btn {
+            background-color: #374151;
+            color: white;
+            border: 1px solid #4b5563;
+            width: 28px;
+            height: 28px;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .stepper-btn:hover { background-color: #4b5563; }
+        .stepper-container { display: flex; align-items: center; gap: 0.75rem; }
+    </style>
+</head>
+<body>
+    <div style="position: fixed; bottom: 5px; left: 5px; z-index: 9990; font-size: 5.0px; color: #fa0000; font-family: sans-serif;">TRAVIS IS #1</div>
+    <header class="w-full bg-opacity-80 backdrop-blur-md bg-[#111827] sticky top-0 z-40 border-b border-[#1f2937]">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-xl sm:text-2xl font-extrabold text-[#2563EB]">Truck Platooning: Interactive ROI Calculator</h1>
+            <div class="text-right text-2xl font-extrabold text-[#DA291C]">Predicting Class 8 Fuel Rate with CNN→GRU</div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6">
+        <section class="card p-5 mb-6">
+            <div class="flex items-center justify-between border-b border-[#1f2937] pb-3 mb-4">
+                <h2 class="text-xl font-bold text-gray-200">Fleet & Savings Inputs</h2>
+                <button id="resetBtn" class="btn btn-gray">Reset to Defaults</button>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-6">
+                <!-- Fleet Inputs -->
+                <div class="space-y-5">
+                    <div>
+                        <label for="fleetSize" class="block text-sm mb-1 text-gray-400">Fleet Size</label>
+                        <div class="grid grid-cols-1 items-center gap-2">
+                            <input id="fleetSize" type="range" min="1" max="5000" step="1" value="1"/>
+                            <div class="stepper-container">
+                                <button class="stepper-btn" id="fleetSize-minus">-</button>
+                                <div class="slider-val flex-grow"><span id="fleetSizeVal">1</span> Trucks</div>
+                                <button class="stepper-btn" id="fleetSize-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="annualMiles" class="block text-sm mb-1 text-gray-400">Annual Miles per Truck</label>
+                        <div class="grid grid-cols-1 items-center gap-2">
+                            <input id="annualMiles" type="range" min="80000" max="150000" step="1000" value="120000"/>
+                             <div class="stepper-container">
+                                <button class="stepper-btn" id="annualMiles-minus">-</button>
+                                <div class="slider-val flex-grow"><span id="annualMilesVal">120,000</span> mi</div>
+                                <button class="stepper-btn" id="annualMiles-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+                     <div>
+                        <label for="baselineMPG" class="block text-sm mb-1 text-gray-400">Baseline Solo MPG</label>
+                        <div class="grid grid-cols-spec items-center gap-3">
+                            <input id="baselineMPG" type="range" min="5.0" max="8.0" step="0.1" value="6.8"/>
+                            <div class="slider-val"><span id="baselineMPGVal">6.8</span> MPG</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Platoon Exposure -->
+                <div class="space-y-5">
+                    <div>
+                        <label for="p2" class="block text-sm mb-1 text-gray-400">% Time in 2-Truck Platoon</label>
+                        <div class="grid grid-cols-spec items-center gap-3">
+                            <input id="p2" type="range" min="0.0" max="1.0" step="0.01" value="0.35"/>
+                            <div class="slider-val"><span id="p2Val">35</span>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="p3" class="block text-sm mb-1 text-gray-400">% Time in 3-Truck Platoon</label>
+                        <div class="grid grid-cols-spec items-center gap-3">
+                            <input id="p3" type="range" min="0.0" max="1.0" step="0.01" value="0.20"/>
+                            <div class="slider-val"><span id="p3Val">20</span>%</div>
+                        </div>
+                    </div>
+                     <div>
+                        <label for="fuelPrice" class="block text-sm mb-1 text-gray-400">Fuel Price ($/gal)</label>
+                        <div class="grid grid-cols-spec items-center gap-3">
+                            <input id="fuelPrice" type="range" min="2.0" max="6.0" step="0.01" value="4.00"/>
+                            <div class="slider-val">$<span id="fuelPriceVal">4.00</span></div>
+                        </div>
+                    </div>
+                    <div id="validationHint" class="text-sm text-red-400 h-5 pt-3"></div>
+                </div>
+                <!-- Savings Factors -->
+                <div class="space-y-5">
+                    <div>
+                        <label for="s2" class="block text-sm mb-1 text-gray-400">2-Truck Fuel Savings %</label>
+                        <div class="grid grid-cols-spec items-center gap-3">
+                            <input id="s2" type="range" min="0.0" max="0.15" step="0.001" value="0.083"/>
+                            <div class="slider-val"><span id="s2Val">8.3</span>%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="s3" class="block text-sm mb-1 text-gray-400">3-Truck Fuel Savings %</label>
+                        <div class="grid grid-cols-spec items-center gap-3">
+                            <input id="s3" type="range" min="0.0" max="0.15" step="0.001" value="0.122"/>
+                            <div class="slider-val"><span id="s3Val">12.2</span>%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="kpi-xl">
+                <div class="kpi-title text-gray-300">Total Fleet: Baseline Annual Fuel</div>
+                <div class="mt-4 space-y-2">
+                    <div class="row"><span>Total Gallons</span><span class="v text-white" id="baselineGal">--</span></div>
+                    <div class="row sub" style="margin-block-end: 2.5lh;"><span>= (miles ÷ MPG) × fleet size</span><span class="v" id="baselineGalFormula">--</span></div>
+
+                </div>
+                <div class="mt-5 border-t border-[#1f2937] pt-4">
+                    <div class="row"><span class="font-bold text-2xl md:text-3xl" style="color: #DA291C;">Annual Fuel Cost</span><span class="money xxl grad-money" id="baselineCost">--</span></div>
+                    <div class="sub text-right" id="baselineCostSub">&nbsp;</div>
+                </div>
+            </div>
+            <div class="kpi-xl">
+                <div class="kpi-title text-gray-300">Total Fleet: Estimated Annual Savings</div>
+                <div class="mt-4 space-y-2">
+                     <div class="row"><span>Gallons Saved</span><span class="v text-white" id="savedGal">--</span></div>
+                     <div class="row"><span>CO2 Savings</span><span class="v text-white" id="savedCO2">--</span></div>
+                    <div class="row sub"><span>= baseline gal × effective savings %</span><span class="v" id="savedGalFormula">--</span></div>
+                </div>
+                <div class="mt-5 border-t border-[#1f2937] pt-4">
+                    <div class="row"><span class="font-bold text-2xl md:text-3xl" style="color:#16a34a;">Annual Savings</span><span class="money xxl grad-money" id="savedCost">--</span></div>
+
+                    <div class="sub text-right" id="savedCostSub">&nbsp;</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card p-5 mb-6">
+             <h2 class="text-xl font-bold text-white mb-4">Annual Savings vs. Time in Platoon (per truck)</h2>
+             <div class="bg-[#0b1220] p-4 rounded-xl border border-[#1f2937]"><canvas id="sensitivityChart" height="400"></canvas></div>
+        </section>
+        
+        <section class="card p-5 mb-6 text-gray-300">
+            <h2 class="text-xl font-bold text-gray-200 mb-3">About the Savings Estimates</h2>
+            <p class="text-sm text-gray-400 mb-4">
+                The default fuel savings and emissions percentages used in this calculator are grounded in a combination of public research and the specific findings from this project's deep learning model.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-bold text-lg text-gray-100 mb-2">Literature Baseline</h3>
+                    <p class="text-sm mb-3">
+                        For 2-truck platoons, a conservative baseline of <strong>6.0%</strong> fuel savings is used, which aligns with published NREL, Caltrans, and USDOT reports. These studies show typical fleet-level savings ranging from 5-7%. These reports also show that <strong>55.7%</strong> of all classifiable miles driven were platoonable.
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        <strong>Sources:</strong><br>
+                        McAuliffe, B., et al. (2018). <em>Influences on Energy Savings of Heavy Trucks Using CACC</em>. NREL Report 70868. <a href="https://www.nrel.gov/docs/fy18osti/70868.pdf" target="_blank" rel="noopener" class="source-link">PDF</a><br>
+                        Caltrans. (2019). <em>Truck Platooning: Assessment of Technology...</em> (Report CA18-2623). <a href="https://dot.ca.gov/-/media/dot-media/programs/research-innovation-system-information/documents/final-reports/ca18-2623-finalreport-a11y.pdf" target="_blank" rel="noopener" class="source-link">PDF</a><br>
+                        USDOT. (2018). <em>Analysis of a Truck Platooning Prototype...</em> <a href="https://www.itskrs.its.dot.gov/2018-b01313?OpenDocument&Query=Home" target="_blank" rel="noopener" class="source-link">Link</a>
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-gray-100 mb-2">Model-Derived & Emissions</h3>
+                     <p class="text-sm mb-3">
+                        For 3-truck platoons, this calculator defaults to <strong>12.2%</strong> savings. This is not a literature value; it is the direct, measured result from this project's CNN→GRU model when analyzing highway segments. This higher value demonstrates the model's ability to uncover more optimistic savings potential under specific, ideal platooning conditions.
+                    </p>
+                     <p class="text-xs text-gray-500">
+                        <strong>CO2 Emissions Source:</strong><br>
+                        U.S. EPA. (2024). <em>Greenhouse Gas Emissions from a Typical Passenger Vehicle</em>. The factor of <strong>22.4 lbs CO₂ per gallon</strong> of diesel is derived from the EPA's stated CO2 emissions from a gallon of diesel: 10,180 grams CO2/ gallon. <a href="https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle" target="_blank" rel="noopener" class="source-link">Link</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 text-gray-400 text-xs mt-8">
+        <p class="mb-2">This page was designed and authored by me. Gemini 2.5 Pro assisted with code drafting and refactoring; all ideas, decisions, and responsibility for the content are my own.</p>
+        <p class="font-bold">© <span id="currentYear"></span> Travis Reinart</p>
+        <p>This work is licensed under a <a class="text-yellow-400 font-semibold" href="https://creativecommons.org/licenses/by-nd/4.0/" target="_blank" rel="noopener">CC BY-ND 4.0 License</a></p>
+    </footer>
+
+<script>
+    console.log(
+        "\n\n\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c              TRAVIS IS #1\n" +
+        "%c            TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c                TRAVIS IS #1\n" +
+        "%c   TRAVIS IS #1 TRAVIS IS #1 TRAVIS IS #1\n\n\n",
+        "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;", "color: green; font-weight: bold; font-size: 18px;"
+    );
+    const year = new Date().getFullYear();
+    console.log(`%c© ${year} Travis Reinart - Sales Analysis Dashboard`, "color: gold; font-size: 16px; font-weight: bold;");
+    console.log("%cLicensed under CC BY-ND 4.0", "color: gold; font-size: 13px; font-weight: normal;");
+    console.log("%chttps://creativecommons.org/licenses/by-nd/4.0/", "color: gold; font-size: 13px; font-weight: normal; text-decoration: underline;");
+
+    const $ = (id) => document.getElementById(id);
+    const money = (n) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    const fmt0 = (n) => Math.round(n).toLocaleString('en-US');
+    const CO2_LBS_PER_GAL = 22.4;
+
+    const DEFAULTS = {
+        fleetSize: 1, annualMiles: 120000, baselineMPG: 6.8, fuelPrice: 4.00,
+        p2: 0.35, p3: 0.20, s2: 0.083, s3: 0.122,
+    };
+    let state = { ...DEFAULTS };
+
+    const elements = {
+        fleetSize: $('fleetSize'), fleetSizeVal: $('fleetSizeVal'),
+        annualMiles: $('annualMiles'), annualMilesVal: $('annualMilesVal'),
+        baselineMPG: $('baselineMPG'), baselineMPGVal: $('baselineMPGVal'),
+        fuelPrice: $('fuelPrice'), fuelPriceVal: $('fuelPriceVal'),
+        p2: $('p2'), p2Val: $('p2Val'),
+        p3: $('p3'), p3Val: $('p3Val'),
+        s2: $('s2'), s2Val: $('s2Val'),
+        s3: $('s3'), s3Val: $('s3Val'),
+        validationHint: $('validationHint'),
+        baselineGal: $('baselineGal'), baselineGalFormula: $('baselineGalFormula'),
+        baselineCost: $('baselineCost'), baselineCostSub: $('baselineCostSub'),
+        savedGal: $('savedGal'), savedCO2: $('savedCO2'), savedGalFormula: $('savedGalFormula'),
+        savedCost: $('savedCost'), savedCostSub: $('savedCostSub'),
+        resetBtn: $('resetBtn'),
+        currentYear: $('currentYear'),
+    };
+    
+    let sensitivityChart;
+
+    function calculateAndRender() {
+        if (state.p2 + state.p3 > 1.0) {
+            elements.validationHint.textContent = "• Total platoon time cannot exceed 100%.";
+            return;
+        } else {
+            elements.validationHint.textContent = "";
+        }
+
+        const fleetSize = state.fleetSize;
+        const gal_baseline_per_truck = state.annualMiles / state.baselineMPG;
+        const eff_savings_per_truck = (state.p2 * state.s2) + (state.p3 * state.s3);
+        const gal_saved_per_truck = gal_baseline_per_truck * eff_savings_per_truck;
+
+        const total_gal_baseline = gal_baseline_per_truck * fleetSize;
+        const total_cost_baseline = total_gal_baseline * state.fuelPrice;
+        const total_gal_saved = gal_saved_per_truck * fleetSize;
+        const total_cost_saved = total_gal_saved * state.fuelPrice;
+        const total_co2_saved = total_gal_saved * CO2_LBS_PER_GAL;
+        
+        elements.baselineGal.textContent = `${fmt0(total_gal_baseline)} gal`;
+        elements.baselineGalFormula.textContent = `(${fmt0(state.annualMiles)} ÷ ${state.baselineMPG.toFixed(1)}) × ${fmt0(fleetSize)}`;
+        elements.baselineCost.textContent = money(total_cost_baseline);
+        elements.baselineCostSub.textContent = `(${fmt0(total_gal_baseline)} gal × $${state.fuelPrice.toFixed(2)})`;
+        
+        elements.savedGal.textContent = `${fmt0(total_gal_saved)} gal`;
+        elements.savedCO2.textContent = `${fmt0(total_co2_saved)} lbs`;
+        elements.savedGalFormula.textContent = `${fmt0(total_gal_baseline)} gal × ${(eff_savings_per_truck * 100).toFixed(1)}%`;
+        elements.savedCost.textContent = money(total_cost_saved);
+        elements.savedCostSub.textContent = `(${fmt0(total_gal_saved)} gal × $${state.fuelPrice.toFixed(2)})`;
+
+        updateChart(gal_baseline_per_truck * state.fuelPrice);
+    }
+    
+    function updateChart(cost_baseline_per_truck) {
+        const p_range = Array.from({ length: 101 }, (_, i) => i / 100);
+        const savings_p2_only = p_range.map(p2 => (p2 * state.s2) * cost_baseline_per_truck);
+        const savings_p3_only = p_range.map(p3 => (p3 * state.s3) * cost_baseline_per_truck);
+        
+        sensitivityChart.data.datasets[0].data = savings_p2_only;
+        sensitivityChart.data.datasets[1].data = savings_p3_only;
+        sensitivityChart.update();
+    }
+
+    function handleInputChange(event) {
+        const id = event.target.id;
+        state[id] = parseFloat(event.target.value);
+        updateValueLabels();
+        calculateAndRender();
+    }
+
+    function setupStepper(inputId, minusId, plusId, step, min, max) {
+        const input = $(inputId);
+        const minusBtn = $(minusId);
+        const plusBtn = $(plusId);
+
+        minusBtn.addEventListener('click', () => {
+            let currentValue = parseFloat(input.value);
+            input.value = Math.max(min, currentValue - step);
+            input.dispatchEvent(new Event('input'));
+        });
+
+        plusBtn.addEventListener('click', () => {
+            let currentValue = parseFloat(input.value);
+            input.value = Math.min(max, currentValue + step);
+            input.dispatchEvent(new Event('input'));
+        });
+    }
+    
+    function updateValueLabels() {
+        elements.fleetSizeVal.textContent = fmt0(state.fleetSize);
+        elements.annualMilesVal.textContent = fmt0(state.annualMiles);
+        elements.baselineMPGVal.textContent = state.baselineMPG.toFixed(1);
+        elements.fuelPriceVal.textContent = state.fuelPrice.toFixed(2);
+        elements.p2Val.textContent = (state.p2 * 100).toFixed(0);
+        elements.p3Val.textContent = (state.p3 * 100).toFixed(0);
+        elements.s2Val.textContent = (state.s2 * 100).toFixed(1);
+        elements.s3Val.textContent = (state.s3 * 100).toFixed(1);
+    }
+
+    function resetDefaults() {
+        state = { ...DEFAULTS };
+        Object.keys(DEFAULTS).forEach(key => {
+            if (elements[key]) {
+                elements[key].value = DEFAULTS[key];
+            }
+        });
+        updateValueLabels();
+        calculateAndRender();
+    }
+
+    function initialize() {
+        elements.currentYear.textContent = new Date().getFullYear();
+        
+        Object.keys(elements).forEach(key => {
+            if (elements[key] && elements[key].type === 'range') {
+                elements[key].addEventListener('input', handleInputChange);
+            }
+        });
+        elements.resetBtn.addEventListener('click', resetDefaults);
+
+        setupStepper('fleetSize', 'fleetSize-minus', 'fleetSize-plus', 1, 1, 15000);
+        setupStepper('annualMiles', 'annualMiles-minus', 'annualMiles-plus', 1000, 80000, 150000);
+
+        const ctx = $('sensitivityChart').getContext('2d');
+        sensitivityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 101 }, (_, i) => i),
+                datasets: [{
+                    label: '2-Truck Platoon Savings',
+                    data: [],
+                    borderColor: '#FBBF24',
+                    borderWidth: 3,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: '#FBBF24',
+                    tension: 0.1
+                }, {
+                    label: '3-Truck Platoon Savings',
+                    data: [],
+                    borderColor: '#22C55E',
+                    borderWidth: 3,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: '#22C55E',
+                    borderDash: [5, 5],
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Time in Platoon (%)', color: '#E5E7EB', font: { size: 14 } },
+                        grid: { color: '#1f2937' },
+                        ticks: { color: '#E5E7EB' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Annual Savings ($)', color: '#E5E7EB', font: { size: 14 } },
+                        grid: { color: '#1f2937' },
+                        ticks: { color: '#E5E7EB', callback: (value) => money(value) }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: '#E5E7EB', font: { size: 14 } }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: ${money(context.raw)}`
+                        }
+                    }
+                }
+            }
+        });
+
+        updateValueLabels();
+        calculateAndRender();
+    }
+    
+    document.addEventListener('DOMContentLoaded', initialize);
+</script>
+</body>
+</html>
+
